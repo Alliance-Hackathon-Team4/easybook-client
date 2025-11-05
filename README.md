@@ -10,9 +10,3 @@ React + TypeScript + Vite 기반
 - 사이드바에서 난이도 조절
 - 어휘 퀴즈로 자동 난이도 설정
 - 문체·어휘를 자동 변환해 이해도 향상
-
----
-
-## 🧩 기술 스택
-- React + TypeScript + Vite  
-- emotion
