@@ -1,4 +1,5 @@
 import { noImgIcon } from "../assets";
+import { ErrorContent, LoadingContent } from "../components";
 import { useGetAllBooks } from "../hooks/useGetAllBooks";
 
 export const MyBooks = () => {
@@ -10,27 +11,9 @@ export const MyBooks = () => {
     return url.startsWith("http://") || url.startsWith("https://");
   };
 
-  if (isPending)
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center">
-        <p className="text-base font-medium text-gray-700 mb-2">
-          책 목록을 불러오는 중입니다
-        </p>
-        <p className="text-sm text-gray-500">잠시만 기다려주세요...</p>
-      </div>
-    );
+  if (isPending) return <LoadingContent />;
 
-  if (error)
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center">
-        <p className="text-lg font-semibold text-red-600 mb-1">
-          문제가 발생했습니다
-        </p>
-        <p className="text-sm text-gray-600">
-          {error instanceof Error ? error.message : "알 수 없는 오류입니다."}
-        </p>
-      </div>
-    );
+  if (error) return <ErrorContent error={error} />;
 
   return (
     <div className="min-h-screen bg-white px-6 py-6">
