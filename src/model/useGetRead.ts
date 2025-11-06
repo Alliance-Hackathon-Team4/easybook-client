@@ -5,6 +5,8 @@ interface BookType {
   page: number;
   readingLevel: number;
   content: string;
+  totalPage: number;
+  title: string;
 }
 
 export const useGetRead = (
