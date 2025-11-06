@@ -14,7 +14,7 @@ export const Header = () => {
       {/* 우측 아이콘들 */}
       <div className="flex items-center gap-6">
         <img src={searchIcon} onClick={() => navigate("/search")} />
-        <img src={myIcon} onClick={() => navigate("/my")} />
+        <img src={myIcon} onClick={() => navigate("/mybooks")} />
       </div>
     </header>
   );
