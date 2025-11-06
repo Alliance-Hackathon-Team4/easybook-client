@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import { Onboarding } from "./pages";
-import Detail from "./pages/Detail";
+import { Main, MyBooks, Onboarding } from "./pages";
 import { AppLayout } from "./layout";
 
 export const Router = createBrowserRouter([
@@ -15,6 +14,15 @@ export const Router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
-    children: [],
+    children: [
+      {
+        path: "/",
+        element: <Main />,
+      },
+      {
+        path: "/mybooks",
+        element: <MyBooks />,
+      },
+    ],
   },
 ]);
