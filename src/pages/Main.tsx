@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SearchBar, CategoryTags } from "../components";
 import { useGetAllBooks } from "../hooks/useGetAllBooks";
 import { noImgIcon } from "../assets";
+import { categories } from "../constants";
 
 export const Main = () => {
   const { data, error, isPending } = useGetAllBooks();
@@ -49,22 +50,6 @@ export const Main = () => {
         </p>
       </div>
     );
-
-  const categories = [
-    "Nutrition",
-    "고전",
-    "Feminism",
-    "Motivational",
-    "Religion",
-    "Mindfulness",
-    "Business",
-    "Habits",
-    "Science",
-    "Self-help",
-    "Decisions",
-    "Marketing",
-    "Entrepreneurship",
-  ];
 
   return (
     <div className="min-h-screen bg-white px-6 py-8 pb-20">

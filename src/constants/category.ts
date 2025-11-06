@@ -1,0 +1,15 @@
+export const categories = [
+  "Nutrition",
+  "고전",
+  "Feminism",
+  "Motivational",
+  "Religion",
+  "Mindfulness",
+  "Business",
+  "Habits",
+  "Science",
+  "Self-help",
+  "Decisions",
+  "Marketing",
+  "Entrepreneurship",
+];
