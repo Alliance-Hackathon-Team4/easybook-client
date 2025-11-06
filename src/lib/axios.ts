@@ -6,6 +6,7 @@ const instance = axios.create({
   headers: {
     "ngrok-skip-browser-warning": "true",
   },
+  timeout: 7000,
 });
 
 export default instance;

@@ -1,15 +1,54 @@
 import { useState } from "react";
 import { SearchBar, CategoryTags } from "../components";
-
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  coverImage: string;
-}
+import { useGetAllBooks } from "../hooks/useGetAllBooks";
+import { noImgIcon } from "../assets";
 
 export const Main = () => {
+  const { data, error, isPending } = useGetAllBooks();
   const [showAllBooks, setShowAllBooks] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const allBooks = data ?? [];
+
+  const isValidImageUrl = (url: string | null | undefined): boolean => {
+    if (!url) return false;
+    return url.startsWith("http://") || url.startsWith("https://");
+  };
+
+  // 검색 필터
+  const filteredBooks = allBooks.filter(
+    (book) =>
+      book.title.toLowerCase().includes(query.toLowerCase()) ||
+      book.author.toLowerCase().includes(query.toLowerCase())
+  );
+
+  const displayedBooks = showAllBooks
+    ? filteredBooks
+    : filteredBooks.slice(0, 3);
+
+  const isSearching = query.trim().length > 0;
+
+  if (isPending)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center">
+        <p className="text-base font-medium text-gray-700 mb-2">
+          책 목록을 불러오는 중입니다
+        </p>
+        <p className="text-sm text-gray-500">잠시만 기다려주세요...</p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center">
+        <p className="text-lg font-semibold text-red-600 mb-1">
+          문제가 발생했습니다
+        </p>
+        <p className="text-sm text-gray-600">
+          {error instanceof Error ? error.message : "알 수 없는 오류입니다."}
+        </p>
+      </div>
+    );
 
   const categories = [
     "Nutrition",
@@ -27,52 +66,8 @@ export const Main = () => {
     "Entrepreneurship",
   ];
 
-  const allRecommendedBooks: Book[] = [
-    {
-      id: 1,
-      title: "The Collected Regrets of...",
-      author: "Mikki Brammer",
-      coverImage: "/books/collected-regrets.jpg",
-    },
-    {
-      id: 2,
-      title: "The Collected Regrets of...",
-      author: "Mikki Brammer",
-      coverImage: "/books/collected-regrets.jpg",
-    },
-    {
-      id: 3,
-      title: "The Collected Regrets of...",
-      author: "Mikki Brammer",
-      coverImage: "/books/collected-regrets.jpg",
-    },
-    {
-      id: 4,
-      title: "The Collected Regrets of...",
-      author: "Mikki Brammer",
-      coverImage: "/books/collected-regrets.jpg",
-    },
-    {
-      id: 5,
-      title: "The Collected Regrets of...",
-      author: "Mikki Brammer",
-      coverImage: "/books/collected-regrets.jpg",
-    },
-    {
-      id: 6,
-      title: "The Collected Regrets of...",
-      author: "Mikki Brammer",
-      coverImage: "/books/collected-regrets.jpg",
-    },
-  ];
-
-  const displayedBooks = showAllBooks
-    ? allRecommendedBooks
-    : allRecommendedBooks.slice(0, 3);
-
   return (
     <div className="min-h-screen bg-white px-6 py-8 pb-20">
-      {/* 헤더 문구 */}
       <div className="mb-6">
         <h1 className="text-4xl font-bold leading-tight mb-2">
           단어 하나가 장벽이
@@ -84,33 +79,45 @@ export const Main = () => {
 
       {/* 검색바 */}
       <div className="mb-6">
-        <SearchBar />
+        <SearchBar onSearch={setQuery} />
       </div>
 
-      {/* 카테고리 태그들 */}
+      {/* 카테고리 태그 */}
       <CategoryTags categories={categories} />
 
-      {/* 월간 추천도서 섹션 */}
+      {/* 도서 섹션 */}
       <div className="mb-6 mt-3">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">월간 추천도서</h2>
+          <h2 className="text-xl font-bold">
+            {isSearching
+              ? `검색 결과 (${filteredBooks.length})`
+              : "월간 추천도서"}
+          </h2>
           <button
             onClick={() => setShowAllBooks(!showAllBooks)}
-            className="text-sm text-gray-600 hover:text-gray-900"
+            className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
           >
             {showAllBooks ? "접기" : "모두보기"}
           </button>
         </div>
 
-        {/* 책 목록 - 가로 스크롤 or 그리드 */}
-        {showAllBooks ? (
+        {filteredBooks.length === 0 ? (
+          <p className="text-sm text-gray-500 text-center py-10">
+            검색 결과가 없습니다.
+          </p>
+        ) : showAllBooks ? (
           <div className="grid grid-cols-3 gap-4">
             {displayedBooks.map((book) => (
               <div key={book.id} className="flex flex-col">
                 <img
-                  src={book.coverImage}
+                  src={
+                    isValidImageUrl(book.imageUrl) ? book.imageUrl : noImgIcon
+                  }
                   alt={book.title}
-                  className="w-full object-cover rounded-lg shadow-md mb-2"
+                  className="w-full h-48 object-cover rounded-lg shadow-md mb-2 hover:shadow-lg transition-shadow"
+                  onError={(e) => {
+                    e.currentTarget.src = noImgIcon;
+                  }}
                 />
                 <h3 className="font-semibold text-sm line-clamp-2 mb-1">
                   {book.title}
@@ -122,11 +129,19 @@ export const Main = () => {
         ) : (
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
             {displayedBooks.map((book) => (
-              <div key={book.id} className="w-32">
+              <div
+                key={book.id}
+                className=" w-32 hover:scale-105 transition-transform"
+              >
                 <img
-                  src={book.coverImage}
+                  src={
+                    isValidImageUrl(book.imageUrl) ? book.imageUrl : noImgIcon
+                  }
                   alt={book.title}
                   className="w-32 h-48 object-cover rounded-lg shadow-md mb-2"
+                  onError={(e) => {
+                    e.currentTarget.src = noImgIcon;
+                  }}
                 />
                 <h3 className="font-semibold text-sm line-clamp-2 mb-1">
                   {book.title}
