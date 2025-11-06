@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import { noImgIcon } from "../assets";
 import { ErrorContent, LoadingContent } from "../components";
 import { useGetAllBooks } from "../hooks/useGetAllBooks";
@@ -5,6 +6,7 @@ import { useGetAllBooks } from "../hooks/useGetAllBooks";
 export const MyBooks = () => {
   const { data, error, isPending } = useGetAllBooks();
   const allBooks = data || [];
+  const navigate = useNavigate();
 
   const isValidImageUrl = (url: string | null | undefined): boolean => {
     if (!url) return false;
@@ -24,6 +26,7 @@ export const MyBooks = () => {
           <div
             key={book.id}
             className="flex gap-4 pb-4 border-gray-100 last:border-0"
+            onClick={() => navigate(`/detail/${book.id}`)}
           >
             {/* 책 표지 */}
             <img
