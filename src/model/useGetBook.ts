@@ -9,6 +9,7 @@ interface BookType {
   currentPage: number;
   currentReadingLevel: number;
   imageUrl: string;
+  description: string;
 }
 
 export const useGetBook = (id?: string) => {
