@@ -13,8 +13,7 @@ export const useGetRead = (
   bookId?: string
 ) => {
   return useQuery<BookType>({
-    queryKey: [page, "post", bookId, readingLevel],
+    queryKey: ["read", bookId, page, readingLevel],
     queryFn: () => getRead(page, readingLevel, bookId),
-    enabled: !!page && !!page && !!bookId,
   });
 };
