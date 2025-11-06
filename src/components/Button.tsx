@@ -5,5 +5,9 @@ interface ButtonProps {
 }
 
 export default function Button({ children }: ButtonProps) {
-  return <button className="font-hsjandari bg-">{children}</button>;
+  return (
+    <button className="font-hsjandari text-white w-full py-3 text-2xl rounded-2xl bg-[#5eb5a8]">
+      {children}
+    </button>
+  );
 }
