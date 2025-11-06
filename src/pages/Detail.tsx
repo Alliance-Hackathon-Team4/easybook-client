@@ -1,7 +1,8 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
 import { Header } from "../components";
 import { useGetBook } from "../model/useGetBook";
 import Button from "../components/Button";
+import { noImgIcon } from "../assets";
 
 export default function Detail() {
   const { id } = useParams<{ id: string }>();
@@ -10,8 +11,14 @@ export default function Detail() {
   const { data } = useGetBook(id);
 
   const handleClick = () => {
-    navigate("/read/" + id + "/" + data?.currentPage);
+    navigate(`/test1/${id}`);
   };
+
+  const isValidImageUrl = (url: string | null | undefined): boolean => {
+    if (!url) return false;
+    return url.startsWith("http://") || url.startsWith("https://");
+  };
+
   return (
     <div>
       <Header />
@@ -19,7 +26,7 @@ export default function Detail() {
         <div className="flex justify-center mt-16 flex-col items-center">
           <img
             className="w-[120px] h-[180px]"
-            src={data?.imageUrl}
+            src={isValidImageUrl(data?.imageUrl) ? data?.imageUrl : noImgIcon}
             alt={data?.title}
           />
           <div className="my-3 flex flex-col justify-center items-center">

@@ -17,5 +17,7 @@ export const useGetRead = (
   return useQuery<BookType>({
     queryKey: ["read", bookId, page, readingLevel],
     queryFn: () => getRead(page, readingLevel, bookId),
+    retry: false,
+    refetchOnWindowFocus: false,
   });
 };
