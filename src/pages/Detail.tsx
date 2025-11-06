@@ -10,7 +10,7 @@ export default function Detail() {
   const { data } = useGetBook(id);
 
   const handleClick = () => {
-    navigate("/read/" + id);
+    navigate("/read/" + id + "/" + data?.currentPage);
   };
   return (
     <div>
