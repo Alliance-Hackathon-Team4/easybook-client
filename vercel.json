@@ -5,6 +5,8 @@
       "source": "/manifest.webmanifest",
       "destination": "/manifest.webmanifest"
     },
+    { "source": "/icon-192.png", "destination": "/icon-192.png" },
+    { "source": "/icon-512.png", "destination": "/icon-512.png" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
